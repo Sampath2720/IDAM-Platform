@@ -47,4 +47,30 @@ pipeline {
                 set -e
 
                 echo "Saving Docker image..."
-                docker save ${IMAGE_NAME}:${IMAGE_TAG} -o 
+                docker save ${IMAGE_NAME}:${IMAGE_TAG} -o ${IMAGE_NAME}.tar
+
+                echo "Importing image into K3s..."
+                timeout 300 sudo k3s ctr images import ${IMAGE_NAME}.tar
+
+                echo "Restarting deployment..."
+                kubectl rollout restart deployment/idam-platform
+
+                echo "Waiting for rollout..."
+                kubectl rollout status deployment/idam-platform --timeout=300s
+
+                echo "Deployment completed successfully"
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+
+        failure {
+            echo 'Pipeline failed. Check console logs.'
+        }
+    }
+}
