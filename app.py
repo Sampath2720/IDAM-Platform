@@ -5,7 +5,7 @@ app = Flask(__name__)
 requests = [
     {
         "request_id": "REQ0001",
-        "employee": "Sampath Dhanunjay  M",
+        "employee": "Sampath DhanunjayM",
         "department": "IT",
         "status": "Pending"
     },
