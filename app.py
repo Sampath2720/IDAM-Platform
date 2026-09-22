@@ -14,16 +14,20 @@ requests = [
         "employee": "Rakesh",
         "department": "Finance",
         "status": "Approved"
-    
     },
     {
-
         "request_id": "REQ0003",
         "employee": "Ram",
         "department": "Finance",
         "status": "Approved"
-    }
+    },
+    {
+        "request_id": "REQ0004",
+        "employee": "Rami",
+        "department": "Finance",
+        "status": "Approved"
 
+    }
 ]
 
 @app.route("/")
@@ -37,4 +41,4 @@ def dashboard():
     )
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=7070)
+    app
