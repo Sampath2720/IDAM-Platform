@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: idam-platform
+
+spec:
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: idam-platform
+
+  template:
+    metadata:
+      labels:
+        app: idam-platform
+
+    spec:
+      containers:
+      - name: idam-platform
+        image: idam-platform:v1
+        imagePullPolicy: Never
+
+        ports:
+        - containerPort: 7070

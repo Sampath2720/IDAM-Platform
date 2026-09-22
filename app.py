@@ -5,7 +5,7 @@ app = Flask(__name__)
 requests = [
     {
         "request_id": "REQ0001",
-        "employee": "Sampath M",
+        "employee": "Sampath Dhanunjay  M",
         "department": "IT",
         "status": "Pending"
     },
@@ -14,7 +14,16 @@ requests = [
         "employee": "Rakesh",
         "department": "Finance",
         "status": "Approved"
+    
+    },
+    {
+
+        "request_id": "REQ0003",
+        "employee": "Ram",
+        "department": "Finance",
+        "status": "Approved"
     }
+
 ]
 
 @app.route("/")
