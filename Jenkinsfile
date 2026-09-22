@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = "idam-platform"
+        IMAGE_TAG = "v1"
+    }
+
     stages {
 
         stage('Checkout') {
@@ -31,7 +36,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 sh '''
-                docker build -t idam-platform:v1 .
+                docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
                 '''
             }
         }
@@ -39,15 +44,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 sh '''
-                docker save idam-platform:v1 -o idam-platform.tar
+                set -e
 
-                sudo k3s ctr images import idam-platform.tar
-
-                kubectl rollout restart deployment/idam-platform
-
-                kubectl rollout status deployment/idam-platform
-                '''
-            }
-        }
-    }
-}
+                echo "Saving Docker image..."
+                docker save ${IMAGE_NAME}:${IMAGE_TAG} -o 
