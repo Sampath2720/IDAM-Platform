@@ -1,53 +1,14 @@
-pipeline {
-    agent any
+stage('Deploy to Kubernetes') {
+    steps {
+        sh '''
+        docker save idam-platform:v1 -o idam-platform.tar
 
-    stages {
+        sudo k3s ctr images import idam-platform.tar
 
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
+        kubectl rollout restart deployment/idam-platform
 
-        stage('Install Dependencies') {
-            steps {
-                sh '''
-                python3 -m venv venv
-                . venv/bin/activate
-                pip install -r requirements.txt
-                '''
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                sh '''
-                . venv/bin/activate
-                pytest -v
-                '''
-            }
-        }
-
-        stage('Docker Build') {
-            steps {
-                sh '''
-                docker build -t idam-platform:v1 .
-                '''
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                sh '''
-                docker stop idam-app || true
-                docker rm idam-app || true
-
-                docker run -d \
-                  --name idam-app \
-                  -p 7070:7070 \
-                  idam-platform:v1
-                '''
-            }
-        }
+        kubectl rollout status deployment/idam-platform
+        '''
     }
 }
+`
